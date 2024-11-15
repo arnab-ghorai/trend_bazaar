@@ -12,7 +12,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Checkout = lazy(() => import("./pages/Checkout"));
-const PlaceOrder = lazy(() => import("./pages/Placeorder"));
+const PlaceOrder = lazy(() => import("./pages/PlaceOrder"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 function App() {

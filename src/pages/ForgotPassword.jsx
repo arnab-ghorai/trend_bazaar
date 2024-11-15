@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -29,6 +31,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
+            onClick={() => navigate("/")}
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           >
             Send Reset Instructions
@@ -37,9 +40,12 @@ const ForgotPassword = () => {
         <div className="mt-4 text-center">
           <p className="text-gray-600">
             Remembered your password?{" "}
-            <a href="/login" className="text-blue-500 hover:underline">
+            <button
+              onClick={() => navigate("/")}
+              className="text-blue-500 hover:underline"
+            >
               Log in
-            </a>
+            </button>
           </p>
         </div>
       </div>

@@ -49,17 +49,20 @@ const Login = () => {
         <div className="mt-4 text-center">
           <p className="text-gray-600">
             Don't have an account?{" "}
-            <a href="/signup" className="text-blue-500 hover:underline">
+            <button
+              onClick={() => navigate("/signup")}
+              className="text-blue-500 hover:underline"
+            >
               Sign up
-            </a>
+            </button>
           </p>
           <p className="text-gray-600 mt-2">
-            <a
-              href="/forgot-password"
+            <button
+              onClick={() => navigate("/forgot-password")}
               className="text-blue-500 hover:underline"
             >
               Forgot password?
-            </a>
+            </button>
           </p>
         </div>
       </div>

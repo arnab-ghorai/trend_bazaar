@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import { CartProvider } from "./context/CartContext";
-import ProductDetails from "./pages/ProductDetails";
 
 // Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -13,6 +12,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const PlaceOrder = lazy(() => import("./pages/PlaceOrder"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 

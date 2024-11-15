@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import { CartProvider } from "./context/CartContext";
+import ProductDetails from "./pages/ProductDetails";
 
 // Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -34,6 +35,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/placeorder" element={<PlaceOrder />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>

@@ -92,10 +92,11 @@ const Navbar = () => {
 
       {/* cart button */}
 
-      {location.pathname === "/" && (
+      {(location.pathname === "/" ||
+        location.pathname.startsWith("/product")) && (
         <div
           className="fixed bottom-6 right-6 bg-gray-900 h-16 w-16 rounded-full flex justify-center items-center 
-      md:hidden cursor-pointer  "
+      md:hidden cursor-pointer"
           onClick={() => navigate("/cart")}
         >
           Cart <sup>{numberOfItem}</sup>

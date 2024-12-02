@@ -1,14 +1,14 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { useSelector } from "react-redux";
 
 const OrderSummary = () => {
-  const { cartItems } = useContext(CartContext);
+  const cartItems = useSelector((state) => state.cart.items);
 
   // Calculate total price of all items
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+
   return (
     <>
       <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
@@ -35,4 +35,5 @@ const OrderSummary = () => {
     </>
   );
 };
+
 export default OrderSummary;

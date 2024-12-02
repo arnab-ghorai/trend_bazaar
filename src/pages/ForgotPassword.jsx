@@ -41,7 +41,7 @@ const ForgotPassword = () => {
           <p className="text-gray-600">
             Remembered your password?{" "}
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/login")}
               className="text-blue-500 hover:underline"
             >
               Log in

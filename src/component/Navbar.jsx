@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.items);
+  const numberOfItem = cartItems.length;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -13,10 +15,9 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  const { numberOfItem } = useContext(CartContext);
-
   const location = useLocation();
   const navigate = useNavigate();
+
   return (
     <nav className="fixed top-0 z-40 bg-gray-900 text-gray-200 shadow-md py-4 w-full">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
@@ -91,12 +92,11 @@ const Navbar = () => {
       </div>
 
       {/* cart button */}
-
       {(location.pathname === "/" ||
         location.pathname.startsWith("/product")) && (
         <div
           className="fixed bottom-6 right-6 bg-gray-900 h-16 w-16 rounded-full flex justify-center items-center 
-      md:hidden cursor-pointer"
+          md:hidden cursor-pointer"
           onClick={() => navigate("/cart")}
         >
           Cart <sup>{numberOfItem}</sup>

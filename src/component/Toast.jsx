@@ -1,8 +1,20 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearNotification } from "../store/cartSlice";
 
 const Toast = () => {
-  const { notification } = useContext(CartContext);
+  const notification = useSelector((state) => state.cart.notification);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        dispatch(clearNotification());
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification, dispatch]);
+
   return (
     <>
       {notification && (
@@ -18,4 +30,5 @@ const Toast = () => {
     </>
   );
 };
+
 export default Toast;

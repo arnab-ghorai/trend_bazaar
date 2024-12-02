@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { removeFromCart, updateQuantity } from "../store/cartSlice";
 import { MdDeleteOutline } from "react-icons/md";
 
 const Cart = () => {
-  const { cartItems, addToCart, removeFromCart, updateQuantity } =
-    useContext(CartContext);
+  const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Calculate the total price of all items in the cart
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-
-  const navigate = useNavigate();
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -23,7 +23,7 @@ const Cart = () => {
           <img
             src="../assets/emptycart.webp"
             alt="Empty cart"
-            className=" mx-auto"
+            className="mx-auto"
           />
           <button
             type="submit"
@@ -55,14 +55,28 @@ const Cart = () => {
               </div>
               <div className="flex items-center space-x-4 w-full sm:w-1/3 justify-center">
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        id: item.id,
+                        quantity: item.quantity - 1,
+                      })
+                    )
+                  }
                   className="bg-gray-200 px-2 py-1 rounded-md text-gray-800 hover:bg-gray-300"
                 >
                   -
                 </button>
                 <span className="text-lg font-semibold">{item.quantity}</span>
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  onClick={() =>
+                    dispatch(
+                      updateQuantity({
+                        id: item.id,
+                        quantity: item.quantity + 1,
+                      })
+                    )
+                  }
                   className="bg-gray-200 px-2 py-1 rounded-md text-gray-800 hover:bg-gray-300"
                 >
                   +
@@ -74,7 +88,7 @@ const Cart = () => {
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => dispatch(removeFromCart(item.id))}
                     className="text-red-500 hover:text-red-700 mt-2 text-3xl"
                   >
                     <MdDeleteOutline />
@@ -90,7 +104,7 @@ const Cart = () => {
           <div className="text-center mt-8">
             <button
               onClick={() => navigate("/checkout")}
-              className="bg-gray-900 text-white px-6 py-3 rounded-full hover:bg-gray-800 transition duration-300"
+              className="bg-gray-800 font-semibold text-white px-6 py-3 rounded-full hover:bg-gray-900 transition duration-300"
             >
               Proceed to Checkout
             </button>

@@ -1,16 +1,31 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
 import { getProducts } from "../activity/api";
+import LoadingSpinner from "../component/LoadingSpinner";
 
 const ProductShowcase = () => {
   const [products, setProducts] = useState([]);
-  const { addToCart } = useContext(CartContext);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getProducts().then((data) => setProducts(data));
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
   }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <section className="py-12 flex flex-col items-center">
@@ -22,7 +37,7 @@ const ProductShowcase = () => {
           <div
             key={product.id}
             className="group bg-white p-6 rounded-lg shadow-md hover:shadow-lg flex flex-col cursor-pointer"
-            onClick={() => navigate(`/product/${product.id}`)} // Navigate to Product Details
+            onClick={() => navigate(`/product/${product.id}`)}
           >
             <div className="overflow-hidden rounded-lg duration-500 group-hover:scale-105">
               <img
@@ -39,8 +54,8 @@ const ProductShowcase = () => {
             </div>
             <button
               onClick={(e) => {
-                e.stopPropagation(); // Prevent triggering the card's onClick
-                addToCart(product);
+                e.stopPropagation();
+                dispatch(addToCart(product));
               }}
               className="bg-orange-500 text-white px-4 py-2 mt-4 rounded-full shadow-md hover:bg-orange-600 transition duration-300 w-full"
             >

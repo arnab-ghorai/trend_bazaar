@@ -1,117 +1,221 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { getProductById } from "../activity/api";
-import { CartContext } from "../context/CartContext";
+import { addToCart } from "../store/cartSlice";
 import Toast from "../component/Toast";
+import LoadingSpinner from "../component/LoadingSpinner";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useContext(CartContext);
+  const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
-    getProductById(id).then((data) => setProduct(data));
+    const fetchProduct = async () => {
+      try {
+        const data = await getProductById(id);
+        setProduct(data);
+        setSelectedImage(data?.image);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
   }, [id]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   if (!product) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-xl text-gray-600 animate-pulse">
-          Loading Product Details...
-        </div>
+        <div className="text-xl text-gray-600">Product not found</div>
       </div>
     );
   }
 
   const handleBuyNow = () => {
-    addToCart(product);
+    dispatch(addToCart(product));
     navigate("/cart");
   };
 
   return (
     <>
-      <Toast></Toast>
-      <div className="container mx-auto px-6 py-12 ">
-        <button
-          onClick={() => navigate("/")}
-          className="fixed top-20 right-6 bg-gray-800 text-white rounded-full p-2 shadow-md hover:bg-gray-900 transition duration-300 z-30 "
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <Toast />
+      <div className="min-h-screen bg-gray-50 pt-20 pb-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-6 transition duration-300"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <div className="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg overflow-hidden">
-          {/* Product Image */}
-          <div className="w-full md:w-1/2 p-6 flex justify-center items-center bg-gray-100">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="rounded-lg shadow-lg w-full object-contain h-auto max-h-[500px] transform transition-transform duration-300 hover:scale-105"
-            />
-          </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>Back to Home</span>
+          </button>
 
-          {/* Product Details */}
-          <div className="w-full md:w-1/2 p-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              {product.title}
-            </h1>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              {product.description}
-            </p>
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-3xl text-orange-500 font-semibold">
-                ${product.price.toFixed(2)}
-              </span>
-              <span className="text-sm text-gray-500">
-                Rating:{" "}
-                <span className="text-yellow-500">
-                  {product.rating?.rate} ★
-                </span>{" "}
-                ({product.rating?.count} reviews)
-              </span>
-            </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+              {/* Image Section */}
+              <div className="flex justify-center items-center bg-white p-8 rounded-xl">
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 group-hover:to-black/10 rounded-xl transition-all duration-300"></div>
+                  <img
+                    src={selectedImage}
+                    alt={product.title}
+                    className="w-full max-h-[400px] object-contain rounded-xl transform transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button
-                onClick={() => addToCart(product)}
-                className="bg-orange-500 text-white px-8 py-3 rounded-lg shadow-md hover:bg-orange-600 transition duration-300 w-full sm:w-auto"
-              >
-                Add to Cart
-              </button>
-              <button
-                onClick={handleBuyNow}
-                className="bg-gray-800 text-white px-8 py-3 rounded-lg shadow-md hover:bg-gray-900 transition duration-300 w-full sm:w-auto"
-              >
-                Buy Now
-              </button>
-            </div>
+              {/* Product Info Section */}
+              <div className="space-y-6">
+                <div className="border-b pb-6">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {product.title}
+                  </h1>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-3xl font-bold text-orange-600">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <div className="flex items-center">
+                      <div className="flex text-yellow-400">
+                        {"★".repeat(Math.round(product.rating?.rate || 0))}
+                        <span className="text-gray-300">
+                          {"★".repeat(
+                            5 - Math.round(product.rating?.rate || 0)
+                          )}
+                        </span>
+                      </div>
+                      <span className="ml-2 text-sm text-gray-600">
+                        ({product.rating?.count} reviews)
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Additional Product Information */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                Product Details
-              </h2>
-              <ul className="list-disc list-inside text-gray-600 space-y-2">
-                <li>
-                  <strong>Category:</strong> {product.category}
-                </li>
-                <li>Premium Quality Guaranteed</li>
-                <li>Free Delivery for Orders Above $50</li>
-                <li>30-Day Hassle-Free Return Policy</li>
-              </ul>
+                <div className="space-y-4">
+                  <div className="bg-gray-50 p-4 rounded-xl">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Description
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Category:
+                    </h3>
+                    <span className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium capitalize">
+                      {product.category}
+                    </span>
+                  </div>
+
+                  <div className="bg-gray-50 p-4 rounded-xl space-y-3">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Highlights
+                    </h3>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <li className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-green-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                        Premium Quality
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-green-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                        30-Day Returns
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-green-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                        Free Shipping
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-green-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                        24/7 Support
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                    <button
+                      onClick={() => dispatch(addToCart(product))}
+                      className="flex-1 bg-white border-2 border-gray-800 text-gray-800 px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300 font-semibold"
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      onClick={handleBuyNow}
+                      className="flex-1 bg-orange-500 text-white px-8 py-3 rounded-full hover:bg-orange-600 transition duration-300 font-semibold shadow-lg"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

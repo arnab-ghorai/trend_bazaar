@@ -1,8 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
-import { CartProvider } from "./context/CartContext";
+import LoadingSpinner from "./component/LoadingSpinner";
 
 // Lazy-loaded pages
 const Home = lazy(() => import("./pages/Home"));
@@ -25,7 +27,7 @@ function App() {
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<Categories />} />
@@ -36,7 +38,6 @@ function App() {
           <Route path="/placeorder" element={<PlaceOrder />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
@@ -47,11 +48,11 @@ function App() {
 
 function AppWrapper() {
   return (
-    <CartProvider>
+    <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </CartProvider>
+    </Provider>
   );
 }
 

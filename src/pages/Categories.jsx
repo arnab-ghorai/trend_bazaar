@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import BackButton from "../component/BackButton";
 const categories = [
   {
     name: "Men's Clothing",
@@ -25,11 +26,17 @@ const categories = [
 ];
 
 const Categories = () => {
+  const navigate = useNavigate();
   return (
-    <div className="font-sans py-16 px-4 bg-gray-50 text-gray-800">
-      <h1 className="text-4xl font-extrabold text-center my-10 text-gray-800">
+    <div className="font-sans py-16 px-4 md:px-10 bg-gray-50 text-gray-800">
+      <BackButton text="Back to Home" path="/"></BackButton>
+      <h2
+        className="text-4xl font-extrabold text-center mt-8
+      mb-4 text-gray-800"
+      >
         Shop by Category
-      </h1>
+      </h2>
+      <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full mb-10"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
         {categories.map((category, index) => (
           <Link

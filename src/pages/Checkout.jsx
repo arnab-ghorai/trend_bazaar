@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import PaymentInfo from "../component/PaymentInfo";
 import ShippingInfo from "../component/ShippingInfo";
 import OrderSummary from "../component/OrderSummary";
+import BackButton from "../component/BackButton";
 
 const Checkout = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-12">
+    <div className="min-h-screen bg-gray-50 pt-14 pb-12">
       <div className="container mx-auto px-4 max-w-6xl">
+        <BackButton text="Back to Cart" path="/cart"></BackButton>
         <div className="flex flex-col items-center mb-8">
           <h2 className="text-4xl font-bold text-gray-800 mb-2">Checkout</h2>
           <div className="w-20 h-1 bg-orange-500 rounded-full"></div>

@@ -5,6 +5,7 @@ import { getProductById } from "../activity/api";
 import { addToCart } from "../store/cartSlice";
 import Toast from "../component/Toast";
 import LoadingSpinner from "../component/LoadingSpinner";
+import BackButton from "../component/BackButton";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -50,25 +51,8 @@ const ProductDetails = () => {
       <div className="min-h-screen bg-gray-50 pt-20 pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-6 transition duration-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>Back to Home</span>
-          </button>
 
+          <BackButton text="Back to Home" path="/"></BackButton>
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
               {/* Image Section */}
@@ -203,7 +187,9 @@ const ProductDetails = () => {
                   <div className="flex flex-col sm:flex-row gap-4 pt-6">
                     <button
                       onClick={() => dispatch(addToCart(product))}
-                      className="flex-1 bg-white border-2 border-gray-800 text-gray-800 px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300 font-semibold"
+                      className="flex-1 bg-white border-2 border-gray-800 text-gray-800 px-8 py-3 rounded-full hover:bg-gray-800
+                      hover:text-white
+                      transition duration-300 font-semibold"
                     >
                       Add to Cart
                     </button>

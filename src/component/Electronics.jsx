@@ -2,9 +2,10 @@ const Electronics = () => {
   return (
     <>
       <section className="py-12 flex flex-col content-center items-center">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8 ">
+        <h2 className="text-4xl font-bold text-gray-800 mb-4">
           Top Electronics
         </h2>
+        <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full mb-10"></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto px-4 ">
           <div
             className="bg-white p-6 rounded-lg shadow-md  hover:shadow-lg flex flex-col

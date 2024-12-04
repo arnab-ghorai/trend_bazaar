@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeFromCart, updateQuantity } from "../store/cartSlice";
 import { MdDeleteOutline } from "react-icons/md";
-import Toast from "../component/Toast";
 import BackButton from "../component/BackButton";
 
 const Cart = () => {
@@ -17,8 +16,7 @@ const Cart = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-14 pb-20">
-      <Toast />
+    <div className="min-h-screen bg-gray-50 pt-14 pb-12">
       <div className="max-w-6xl mx-auto px-4">
         <BackButton text="Back to Home" path="/"></BackButton>
         <div className="flex flex-col items-center mb-8">

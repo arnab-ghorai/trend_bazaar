@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const initialState = {
   items: [],
-  notification: "",
 };
 
 const cartSlice = createSlice({
@@ -18,11 +18,11 @@ const cartSlice = createSlice({
       } else {
         state.items.push({ ...action.payload, quantity: 1 });
       }
-      state.notification = "Product added";
+      toast.success("Product added to cart");
     },
     removeFromCart: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
-      state.notification = "Product removed";
+      toast.success("Product removed from cart");
     },
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
@@ -33,19 +33,11 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.items = [];
-      state.notification = "Order Placed";
-    },
-    clearNotification: (state) => {
-      state.notification = "";
+      toast.success("Order placed successfully");
     },
   },
 });
 
-export const {
-  addToCart,
-  removeFromCart,
-  updateQuantity,
-  clearCart,
-  clearNotification,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

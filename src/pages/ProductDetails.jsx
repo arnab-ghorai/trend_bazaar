@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductById } from "../activity/api";
 import { addToCart } from "../store/cartSlice";
-import Toast from "../component/Toast";
+
 import LoadingSpinner from "../component/LoadingSpinner";
 import BackButton from "../component/BackButton";
 
@@ -47,11 +47,9 @@ const ProductDetails = () => {
 
   return (
     <>
-      <Toast />
-      <div className="min-h-screen bg-gray-50 pt-20 pb-12">
+      <div className="min-h-screen bg-gray-50 pt-14 pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
-
           <BackButton text="Back to Home" path="/"></BackButton>
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">

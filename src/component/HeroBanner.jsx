@@ -28,7 +28,7 @@ const HeroBanner = () => {
                 alt="Fashion Collection"
                 className="w-full max-w-lg md:max-w-xl mx-auto transform hover:scale-105 transition duration-500"
               />
-              <div className="absolute -top-4 -right-4 bg-orange-500 text-white text-lg font-bold px-6 py-2 rounded-full transform rotate-12">
+              <div className="absolute -top-4 -right-4 bg-orange-500 text-white text-lg font-bold px-6 py-2 rounded-full transform rotate-12 mr-1">
                 Sale!
               </div>
             </div>

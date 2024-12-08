@@ -37,33 +37,33 @@ const ProductShowcase = () => {
           <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {products.map((product) => (
             <div
               key={product.id}
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
             >
               <div
-                className="relative p-6 bg-white cursor-pointer group"
+                className="relative p-3 md:p-6 bg-white cursor-pointer group"
                 onClick={() => navigate(`/product/${product.id}`)}
               >
-                <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg ">
+                <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
                   <img
                     src={product.image}
                     alt={product.title}
-                    className="w-full h-64 object-contain p-4 transform group-hover:scale-110 transition duration-500"
+                    className="w-full  h-44 md:h-64 object-contain p-2 md:p-4 transform group-hover:scale-110 transition duration-500"
                   />
                 </div>
                 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
               </div>
 
-              <div className="p-6 border-t border-gray-100">
-                <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 h-14">
+              <div className=" p-3 md:p-6 border-t border-gray-100">
+                <h3 className="text-base md:text-lg font-bold text-gray-800 mb-2 line-clamp-1  md:line-clamp-2   h-7 md:h-14">
                   {product.title}
                 </h3>
 
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl font-bold text-orange-500">
+                  <span className="text-xl md:text-2xl font-bold text-orange-500">
                     ${product.price.toFixed(2)}
                   </span>
                   <div className="flex items-center">
@@ -79,7 +79,7 @@ const ProductShowcase = () => {
                     e.stopPropagation();
                     dispatch(addToCart(product));
                   }}
-                  className="w-full bg-gray-800 text-white py-3 rounded-full hover:bg-gray-900 transition duration-300 flex items-center justify-center space-x-2 group"
+                  className="w-full bg-gray-800 text-white text-sm md:text-base py-2 md:py-3 rounded-full hover:bg-gray-900 transition duration-300 flex items-center justify-center space-x-2 group"
                 >
                   <span>Add to Cart</span>
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../component/BackButton";
 const categories = [
   {
@@ -26,7 +25,6 @@ const categories = [
 ];
 
 const Categories = () => {
-  const navigate = useNavigate();
   return (
     <div className="font-sans py-16 px-4 md:px-10 bg-gray-50 text-gray-800">
       <BackButton text="Back to Home" path="/"></BackButton>

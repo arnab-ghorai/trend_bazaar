@@ -1,44 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { validationSchemas } from "../activity/validationSchemas";
+import TextInput from "../component/TextInput";
+import { toast } from "react-toastify";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Signup = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: { name: "", email: "", password: "", confirmPassword: "" },
+    validationSchema: validationSchemas.signup,
+    onSubmit: (values) => {
+      navigate("/");
+      toast.success("Signup Successful");
+    },
+  });
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-6 ">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Create an Account
         </h2>
-        <form className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Enter your full name"
-              className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <TextInput label="Full Name" id="name" type="text" formik={formik} />
+
+          <TextInput label="Email" id="email" type="email" formik={formik} />
+
+          <div className="relative">
             <label
               htmlFor="password"
               className="block text-gray-700 font-medium mb-2"
@@ -46,30 +39,70 @@ const Signup = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder="Enter your password"
               className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <div
+              className="absolute top-[2.7rem] right-4 cursor-pointer text-gray-600"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible size={20} />
+              ) : (
+                <AiOutlineEye size={20} />
+              )}
+            </div>
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors.password}
+              </p>
+            )}
           </div>
-          <div>
+
+          <div className="relative">
             <label
-              htmlFor="confirm-password"
+              htmlFor="confirmPassword"
               className="block text-gray-700 font-medium mb-2"
             >
               Confirm Password
             </label>
             <input
-              type="password"
-              id="confirm-password"
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               placeholder="Confirm your password"
               className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <div
+              className="absolute top-[2.7rem] right-4 cursor-pointer text-gray-600"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible size={20} />
+              ) : (
+                <AiOutlineEye size={20} />
+              )}
+            </div>
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
           </div>
+
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-            onClick={() => navigate("/")}
           >
             Sign Up
           </button>

@@ -4,27 +4,58 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../store/cartSlice";
 import { getProducts } from "../activity/api";
 import LoadingSpinner from "../component/LoadingSpinner";
+import { FaRedo } from "react-icons/fa";
 
 const ProductShowcase = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(false);
+      const data = await getProducts();
+      if (!data) throw new Error("Failed to fetch products");
+      setProducts(data);
+    } catch (err) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getProducts();
-        setProducts(data);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProducts();
   }, []);
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center bg-gray-50 px-4">
+        <div className="text-center">
+          <h3 className="mt-4 text-lg font-medium text-gray-900">
+            No Connection
+          </h3>
+          <p className="mt-2 text-sm text-gray-500">
+            We couldn't fetch the products. Please check your internet
+            connection and try again.
+          </p>
+          <button
+            onClick={fetchProducts}
+            className="mt-6 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-300 gap-2"
+          >
+            <FaRedo />
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
